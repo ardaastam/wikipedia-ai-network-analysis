@@ -53,14 +53,3 @@ For analysis I used `networkx` and `python-louvain`. The methods cover:
 * Watts-Strogatz small-world test
 * A robustness test that removes hubs one by one
 * Yearly snapshots and editor cohort analysis
-
-
-## Files in this repo
-
-* `analysis.ipynb`, the main notebook with all the code
-* `figures/`, generated plots
-* `network_interactive.html`, interactive network you can explore in a browser
-* `report/`, final report (Turkish and English)
-
-
-## To run it yourself
