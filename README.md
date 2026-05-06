@@ -1,98 +1,91 @@
 # Wikipedia AI Editor Network Analysis
 
-A social network analysis of collaborative editing behavior in the English Wikipedia Artificial Intelligence article cluster, 2018–2025.
+Social network analysis project examining the co-editing network of Wikipedia editors who contributed to AI-related articles between 2018 and 2025.
 
-**Author:** Arda Astam  
-**Course:** Social Network Analysis  
-**Department:** Computational Social Science, Koç University
-
----
-
-## Project Overview
-
-This project examines the social structure underlying knowledge production on Wikipedia by constructing and analyzing the co-editing network of contributors to the English Wikipedia Artificial Intelligence article cluster.
-
-### Research Questions
-
-1. Who are the central actors in the AI editor co-editing network?
-2. How do editors organize into communities?
-3. Does the network exhibit small-world properties?
-4. How does the network respond to the removal of hub editors?
-5. How has the network evolved between 2018 and 2025, particularly after ChatGPT's release in late 2022?
+**Arda Astam** — Koç University, Computational Social Science  
+*Social Network Analysis course project, Spring 2026*
 
 ---
 
-## Key Findings
+## What is this project about?
 
-- **Hub-dominated network:** Maxeto0910 and Jarble rank #1 and #2 across all four centrality metrics
-- **No small-world structure:** Sigma = 0.21 indicates a core-periphery topology
-- **High structural fragility:** Removing just Maxeto0910 fragments the network into 19 components
-- **ChatGPT effect:** Editor count grew from 3,671 (2022) to 6,462 (2025)
-- **Integration crisis:** 2025 cohort has 1/8 the average degree of the 2018 cohort
+Wikipedia is one of the most consulted reference sources in the world, but the social dynamics behind its content are still not very well studied. This project takes a closer look at one specific corner of Wikipedia: the Artificial Intelligence article cluster.
 
----
+The basic idea: when two editors work on the same article, they form a connection. By collecting the revision histories of 186 AI-related articles, I built a network of 467 editors and 3,705 connections. Then I analyzed it.
 
-## Methodology
-
-### Data Collection
-- **Source:** MediaWiki REST API via mwclient
-- **Category:** English Wikipedia "Artificial Intelligence"
-- **Articles analyzed:** 186 (after filtering)
-- **Total revisions:** 20,636
-- **Time range:** 2018–2025
-
-### Network Construction
-- **Nodes:** Wikipedia editors
-- **Edges:** Co-editing relationships (≥ 2 shared articles)
-- **Final network:** 467 nodes, 3,705 edges
-
-### Analysis Methods
-- **Centrality:** Degree, Betweenness, PageRank, Closeness
-- **Community detection:** Louvain algorithm
-- **Small-world test:** Watts-Strogatz framework
-- **Robustness test:** Sequential hub removal
-- **Temporal analysis:** Annual cumulative snapshots
-- **Cohort analysis:** New editor integration tracking
+The motivation came from ChatGPT. After November 2022, AI became a mainstream topic almost overnight, and I wanted to see whether and how this changed the editorial community on Wikipedia.
 
 ---
 
-## Tools & Libraries
+## Research questions
 
-- `mwclient` — Wikipedia API client
-- `networkx` — Network analysis
-- `python-louvain` — Community detection
-- `pyvis` — Interactive visualizations
-- `pandas`, `numpy` — Data manipulation
-- `matplotlib` — Static visualizations
+The project tries to answer five questions:
 
----
-
-## How to Reproduce
-
-1. Clone this repository
-2. Install dependencies: `pip install mwclient networkx python-louvain pyvis pandas numpy matplotlib`
-3. Open `analysis.ipynb` in Jupyter Notebook or VS Code
-4. Run all cells in order (data collection takes 5-10 minutes)
+1. Who are the most central editors in this network?
+2. Do editors group into communities, and if so, how distinct are these groups?
+3. Does the network show small-world properties (high clustering + short paths)?
+4. What happens to the network if hub editors leave?
+5. How has the structure changed between 2018 and 2025, especially after ChatGPT?
 
 ---
 
-## Notes on Reproducibility
+## Main findings
 
-- **Data collection date:** January 2026
-- **Random seed:** 42 (for Watts-Strogatz null model and spring layout)
-- Wikipedia content changes continuously, so re-running the notebook may produce slightly different results.
+A few things stood out:
 
----
-
-## Limitations
-
-- Sample limited to 186 articles in the main AI category
-- Co-editing edges do not distinguish constructive collaboration from edit conflicts
-- Bot detection relies on username heuristics
-- Five large articles (>300 editors each) excluded to avoid noise
+- Two editors, **Maxeto0910** and **Jarble**, dominate the network. They rank first and second on all four centrality metrics I used.
+- The network is *not* small-world. Sigma came out to 0.21, which is much lower than 1. This indicates a core-periphery structure rather than the typical small-world pattern.
+- Removing just Maxeto0910 fragments the network into 19 disconnected pieces. Removing the top 6 hubs creates 52 pieces. Pretty fragile.
+- The number of editors grew sharply after 2022 (from 3,671 to 6,462 by 2025), but new editors aren't really integrating. The 2025 cohort has roughly 1/8 the average connectivity of the 2018 cohort.
 
 ---
 
-## Author
+## Data and method
 
-Arda Astam — Koç University, Computational Social Science Department
+Data was collected via the MediaWiki REST API using the `mwclient` Python library. I filtered out bots (221 accounts removed), excluded revisions outside 2018-2025, and skipped 5 articles that had over 300 editors each (these were too crowded to represent real collaboration). The final dataset has 20,636 revisions.
+
+Network construction:
+- Each editor is a node
+- An edge means two editors edited at least 2 articles in common
+- Edge weight = number of shared articles
+
+For analysis I used `networkx` and `python-louvain`. The methods cover:
+- Four centrality measures (degree, betweenness, PageRank, closeness)
+- Louvain community detection
+- Watts-Strogatz small-world test
+- A robustness test that removes hubs one by one
+- Yearly snapshots and editor cohort analysis
+
+---
+
+## Files in this repo
+
+- `analysis.ipynb` — the main notebook with all the code
+- `figures/` — generated plots
+- `network_interactive.html` — interactive network you can explore in a browser
+- `report/` — final report (Turkish and English)
+
+---
+
+## To run it yourself
+
+```bash
+pip install mwclient networkx python-louvain pyvis pandas numpy matplotlib
+```
+
+Then open `analysis.ipynb` in Jupyter or VS Code and run the cells. Heads up: data collection takes a few minutes due to API rate limits.
+
+---
+
+## Some caveats
+
+- The 186 articles are only from the main "Artificial Intelligence" category. Subcategories like "Machine learning" or "Computer vision" weren't included.
+- The co-editing edges don't tell you whether the collaboration was friendly or whether it was an edit war.
+- Bot detection is based on usernames containing "bot", "crawler", or "spider". Not perfect, semi-automated accounts could slip through.
+- Wikipedia changes constantly, so if you run the notebook later you'll get slightly different numbers.
+
+---
+
+## Contact
+
+For questions: feel free to reach out via GitHub or my Koç University email.
